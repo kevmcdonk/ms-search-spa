@@ -1,0 +1,24 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Sorry, we cannot find a response to that question. Please provide further feedback for our admins as to what you were looking for (up to 250 characters)",
+            "wrap": true
+        },
+        {
+            "type": "Input.Text",
+            "placeholder": "Add your feedback here...",
+            "id": "feedbackText",
+            "maxLength": 250
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Submit feedback"
+        }
+    ]
+}
