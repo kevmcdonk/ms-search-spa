@@ -2,9 +2,10 @@ import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from '~/context';
 import { SearchBox } from 'office-ui-fabric-react';
 import { useDebounce } from 'use-lodash-debounce';
-import { getAnswer, sendFeedback } from '~/services';
+import { getAnswer, sendFeedback, searchDriveItems } from '~/services';
 import * as AdaptiveCards from 'adaptivecards';
 import qnaCard from '~/cards/qna';
+import searchResultCard from '~/cards/searchResult';
 import qnaNoResponseCard from '~/cards/qnaNoResponseCard';
 import * as ACFabric from 'adaptivecards-fabric';
 import * as ACData from 'adaptivecards-templating';
@@ -21,10 +22,12 @@ const Search = () => {
     useEffect(() => {
         setLoading(true);
         if (debouncedSearchCriteria !== '') {
-            Promise.all([returnAnswers(debouncedSearchCriteria)]).then((res) => {
+            Promise.all([returnAnswers(debouncedSearchCriteria), returnSearchResults(debouncedSearchCriteria)]).then((res) => {
                 setLoading(true);
                 const answers = res[0].answers;
+                const searchResults = res[1].value[0].hitsContainers[0].hits;
 
+                if (answers != null) {
                 const qnaCards = answers.map(answer => {
                     if (answer.answer == 'No good match found in KB.') {
                         return generateCard(qnaNoResponseCard, answer);
@@ -32,7 +35,12 @@ const Search = () => {
                         return generateCard(qnaCard, answer);
                     }
                 });
-                setCards([...qnaCards]);
+            }
+
+                const searchCards = searchResults.map(searchResult => {
+                    return generateCard(searchResultCard, searchResult._source);
+                });
+                setCards([...searchCards]);
                 setLoading(false);
             });
         }
@@ -73,8 +81,24 @@ const Search = () => {
 
     const returnAnswers = (value) => {
         return new Promise((resolve, reject) => {
-            getAnswer(value)
-                .then((res) => resolve(res.data), err => console.error(err));
+            //getAnswer(value)
+            //    .then((res) => resolve(res.data), err => console.error(err));
+            resolve('');
+        })
+    }
+
+    const returnSearchResults = (value) => {
+        return new Promise((resolve, reject) => {
+            getGraphAccessToken()
+                .then(token => {
+                    searchDriveItems(token, value)
+                        .then((res) => {
+                            return resolve(res.data);
+                        }, err => {
+                            console.error(err);
+                            return;
+                        });
+                    })
         })
     }
 
