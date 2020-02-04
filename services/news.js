@@ -52,7 +52,8 @@ export const getNews = (spToken) =>
         url: '/_api/search/query',
         params: {
             querytext: '\'ContentTypeId:0x0101009D1CB255DA76424F860D91F20E6C4118* and PromotedState=2\'',
-            sortlist: '\'LastModifiedTime:descending\''
+            sortlist: '\'LastModifiedTime:descending\'',
+            rowlimit: 8
         },
         headers: {
             ...baseHeaders,

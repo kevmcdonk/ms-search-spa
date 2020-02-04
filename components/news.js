@@ -6,162 +6,110 @@ import {
     DocumentCardPreview,
     DocumentCardTitle,
     IDocumentCardPreviewProps
-  } from 'office-ui-fabric-react/lib-commonjs/DocumentCard';
-  import { ImageFit } from 'office-ui-fabric-react/lib-commonjs/Image';
+} from 'office-ui-fabric-react/lib-commonjs/DocumentCard';
+import { ImageFit } from 'office-ui-fabric-react/lib-commonjs/Image';
 import { useState, useEffect } from 'react';
+import newsResultCard from '~/cards/newsResult';
 import { relative } from 'path';
 import { CardElement } from 'adaptivecards';
+import * as AdaptiveCards from 'adaptivecards';
+import * as ACFabric from 'adaptivecards-fabric';
+import * as ACData from 'adaptivecards-templating';
 
 const News = ({ data, elementPrefix, hideArrows, wheel }) => {
 
-    const [selected, setSelected] = useState(0);
-    const [menuItems, setMenuItems] = useState([]);
-    const ArrowLeft = Arrow({ icon: 'ChevronLeft', elementPrefix: elementPrefix });
-    const ArrowRight = Arrow({ icon: 'ChevronRight', elementPrefix: elementPrefix });
-    const ArrowHidden = Arrow({ icon: '', elementPrefix: elementPrefix })
-
+    const [searchCriteria, setSearchCriteria] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [newsResults, setNewsResults] = useState([]);
+    const [cards, setCards] = useState([]);
 
     const onSelect = (key) => {
         setSelected({ selected: key });
     }
 
     useEffect(() => {
-        setMenuItems(Menu(data, elementPrefix));
+        setLoading(true);
+        const newsCards = data.map(newsResult => {
+            return generateCard(newsResultCard, newsResult);
+        });
+        setCards([...newsCards]);
     }, [])
 
     return (
-        
+
 
         <>
-            <div className="ms-Grid" dir="ltr">
-  <div className="ms-Grid-row">
-            
-            {data.map((card, i) => {
-                console.log('Find some news');
-                const previewProps = {
-                    previewImages: [
-                      {
-                        name: card.title,
-                        linkProps: {
-                          href: 'http://bing.com',
-                          target: '_blank'
-                        },
-                        previewImageSrc: card.pictureThumbnailUrl,
-                        //iconSrc: TestImages.iconPpt,
-                        imageFit: ImageFit.cover,
-                        width: 318,
-                        height: 196
-                      }
-                    ]
-                  };
-
-                return <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg3">
-                <DocumentCard
-                aria-label="Default Document Card with large file name. Created by Annie Lindqvist a few minutes ago."
-                onClickHref="http://bing.com"
-              >
-                <DocumentCardPreview {...previewProps} />
-        <DocumentCardTitle
-                  title={card.title}
-                  shouldTruncate={true}
-                />
-              </DocumentCard>
-              </div>
-            })}
-            </div>
+            <div className="ms-Grid" style={{
+                backgroundColor: '#e9ecef',
+                padding: '10px',
+                position: 'absolute',
+                zIndex: 4444,
+                width: '1088px'
+            }}>
+               
+                    <div className="ms-Grid-row">
+                        {cards.map((card, i) => {
+                            // Return the element. Also pass key
+                            return <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg3">
+                            <div key={'appDiv' + i} 
+                                className="card ms-depth-16"
+                                style={{
+                                    margin: '5px',
+                                    position: 'relative',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    minWidth: '0',
+                                    wordWrap: 'break-word',
+                                    backgroundColor: '#fff',
+                                    backgroundClip: 'border-box',
+                                    border: '1px solid rgba(0,0,0,.125)',
+                                    borderRadius: '.25rem'
+                                }} ref={(n) => { n && n.appendChild(card) }} />
+                            </div>
+                        })}
+                    </div>
             </div>
         </>
     )
 }
 
-const MenuItem = ({ link, newsTitle, imgAlt, key, description, elementPrefix }) => {
-    const [dialogHidden, setDialogVisible] = useState(true);
-    const toggleDialog = () => {
-        let visible = dialogHidden;
-        if (visible) {
-            visible = false;
-        } else {
-            visible = true;
-        }
-        setDialogVisible(visible);
-    }
 
-
-    const parentImage = { position: relative};
-    const infoSection = {
-        position: 'absolute',
-        top: '20px',
-        left: '190px',
-        width: '100%',
-        height: '100%'
-    };
-    const infoIcon = {
-        fontSize: 'x-large',
-        color: 'black',
-        cursor: 'pointer'
-    };
-    const callout = {
-        maxWidth: 300
-    }
-    
-    const _menuButtonElement = React.createRef();
-    
-    return (
-        <div key={key} className={'ms-Grid-col ms-sm12'} style={parentImage}>
-            <a href={link} target="_blank" rel="noopener noreferrer" >
-                <img id={'img' + elementPrefix + newsTitle} src={newsTitle + '600.png'} alt={imgAlt} className='roundCorners' style={{ height: '200px' }} />
-                </a>
-                <div style={infoSection} ref={_menuButtonElement} onClick={toggleDialog}>
-                    <Icon id={'info' + elementPrefix + newsTitle} iconName="Info" className="ms-IconExample" style={infoIcon}/>       
-                </div>
-                
-                <Dialog
-                hidden={dialogHidden}
-                onDismiss={toggleDialog}
-                dialogContentProps={{
-                  type: DialogType.normal,
-                  title: imgAlt,
-                  closeButtonAriaLabel: 'Close',
-                  subText: description
-                }}
-                modalProps={{
-                  isBlocking: false,
-                  styles: { main: { maxWidth: 450 } }
-                }}
-              >
-              </Dialog>
-                
-        </div>
-    );
-};
-
-const Menu = (list, elementPrefix) =>
-    list.map((news, i) => {
-        return <MenuItem
-            link={news.AbsoluteUrl}
-            newsTitle={`${replaceSpaces(news.Title)}`}
-            imgAlt={news.Title}
-            key={i}
-            description={news.Description}
-            elementPrefix={elementPrefix}
-        />
+const generateCard = (template, app) => {
+    const adaptiveCard = new AdaptiveCards.AdaptiveCard();
+    ACFabric.useFabricComponents();
+    adaptiveCard.hostConfig = new AdaptiveCards.HostConfig({
+        fontFamily: "Segoe UI, Helvetica Neue, sans-serif"
     });
-
-const Arrow = ({ icon, elementPrefix }) => {
-    const className = icon ? '' : 'arrow-hidden';
-    const styles = icon ? { cursor: 'pointer', padding: '20px', zIndex: 300 } : { padding: '20px' };
-    return (
-        <div className={className} style={styles}>
-            <Icon id={elementPrefix + icon} iconName={icon} className={'ms-IconExample'} style={{ fontSize: '40px', color: 'white' }} />
-        </div>
-    );
-};
-
+    adaptiveCard.onExecuteAction = function (action) {
+        if (action.title === 'Submit feedback') {
+            return new Promise((resolve, reject) => {
+                getGraphAccessToken()
+                    .then(token => {
+                        return sendFeedback(token, action._processedData.feedbackText);
+                    })
+                    .then((res) => {
+                        setSearchCriteria('');
+                        return resolve(res.data);
+                    }, err => {
+                        console.error(err);
+                    });
+            })
+        } else {
+            window.location.href = action.url;
+        }
+    };
+    const acTemplate = new ACData.Template(template);
+    const dataContext = new ACData.EvaluationContext();
+    dataContext.$root = app;
+    const card = acTemplate.expand(dataContext);
+    adaptiveCard.parse(card);
+    return adaptiveCard.render();
+}
 
 function replaceSpaces(imagePath) {
     if (imagePath && imagePath != undefined && imagePath != null && imagePath != '') {
-        imagePath = imagePath.replace(' ','');
-        imagePath = imagePath.replace('%20','');
+        imagePath = imagePath.replace(' ', '');
+        imagePath = imagePath.replace('%20', '');
         return imagePath;
     }
     return '';
