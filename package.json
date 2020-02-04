@@ -25,7 +25,7 @@
     "lodash.debounce": "4.0.8",
     "msal": "1.2.0-beta.5",
     "next": "9.1.5",
-    "office-ui-fabric-react": "7.71.0",
+    "office-ui-fabric-react": "^7.71.0",
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "react-horizontal-scrolling-menu": "0.7.4",

@@ -10,6 +10,7 @@ module.exports = () => {
             clientId: process.env.APP_CLIENT_ID,
             url: process.env.APP_URL,
             redirectUri: process.env.APP_REDIRECT_URI,
+            hubAppCatalogSite: process.env.HUB_APP_CATALOG,
             postLogoutRedirectUri: process.env.APP_POST_LOGOUT_REDIRECT_URI,
             authority: process.env.APP_AUTHORITY,
             sharePointTenant: process.env.APP_SHAREPOINT_TENANT,

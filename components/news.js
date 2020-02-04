@@ -1,7 +1,16 @@
 import ScrollMenu from 'react-horizontal-scrolling-menu';
 import { Icon, Dialog, DialogType } from 'office-ui-fabric-react';
+import {
+    DocumentCard,
+    DocumentCardActivity,
+    DocumentCardPreview,
+    DocumentCardTitle,
+    IDocumentCardPreviewProps
+  } from 'office-ui-fabric-react/lib-commonjs/DocumentCard';
+  import { ImageFit } from 'office-ui-fabric-react/lib-commonjs/Image';
 import { useState, useEffect } from 'react';
 import { relative } from 'path';
+import { CardElement } from 'adaptivecards';
 
 const News = ({ data, elementPrefix, hideArrows, wheel }) => {
 
@@ -21,40 +30,46 @@ const News = ({ data, elementPrefix, hideArrows, wheel }) => {
     }, [])
 
     return (
+        
+
         <>
-            <ScrollMenu
-                alignCenter={false}
-                data={menuItems}
-                arrowLeft={hideArrows ? ArrowHidden : ArrowLeft}
-                arrowRight={hideArrows ? ArrowHidden : ArrowRight}
-                selected={selected}
-                onSelect={onSelect}
-                wheel={wheel}
-            />
-            <style global jsx>{`
-                .menu-item {
-                    padding: 0 40px;
-                    margin: 5px 10px;
-                    user-select: none;
-                    cursor: pointer;
-                    border: none;
-                }
-                .menu-item-wrapper {
-                    border: none;
-                    outline-style:none;
-                  }
-                  .menu-item.active {
-                    border: none;
-                  }
-                .arrow-hidden {
-                    visibility: hidden;
-                }
-                .roundCorners {
-                    border-radius: 15%;
-                    border: 2px solid black;
-                    margin: 10px;
-                }
-            `}</style>
+            <div className="ms-Grid" dir="ltr">
+  <div className="ms-Grid-row">
+            
+            {data.map((card, i) => {
+                console.log('Find some news');
+                const previewProps = {
+                    previewImages: [
+                      {
+                        name: card.title,
+                        linkProps: {
+                          href: 'http://bing.com',
+                          target: '_blank'
+                        },
+                        previewImageSrc: card.pictureThumbnailUrl,
+                        //iconSrc: TestImages.iconPpt,
+                        imageFit: ImageFit.cover,
+                        width: 318,
+                        height: 196
+                      }
+                    ]
+                  };
+
+                return <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg3">
+                <DocumentCard
+                aria-label="Default Document Card with large file name. Created by Annie Lindqvist a few minutes ago."
+                onClickHref="http://bing.com"
+              >
+                <DocumentCardPreview {...previewProps} />
+        <DocumentCardTitle
+                  title={card.title}
+                  shouldTruncate={true}
+                />
+              </DocumentCard>
+              </div>
+            })}
+            </div>
+            </div>
         </>
     )
 }
@@ -144,9 +159,12 @@ const Arrow = ({ icon, elementPrefix }) => {
 
 
 function replaceSpaces(imagePath) {
-    imagePath = imagePath.replace(' ','');
-    imagePath = imagePath.replace('%20','');
-    return imagePath;
+    if (imagePath && imagePath != undefined && imagePath != null && imagePath != '') {
+        imagePath = imagePath.replace(' ','');
+        imagePath = imagePath.replace('%20','');
+        return imagePath;
+    }
+    return '';
 }
 
 function onDialogDismiss() {

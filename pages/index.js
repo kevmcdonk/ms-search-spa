@@ -18,7 +18,57 @@ const Home = () => {
             .then((spToken) => {
                 Promise.all([getNews(spToken)])
                         .then((res) => {
-                            setGlobalNews(res[0].data.value);
+                            let queryResults = [];
+                            res[0].data.PrimaryQueryResult.RelevantResults.Table.Rows.map((row, i)=> {
+                                
+                                // Title, DocId, Author, Path, Description, PictureThumbnailUrl, SiteName, SPWebUrl, ViewsLifeTime, ViewsRecent
+                                let queryResult = {
+                                    title: '',
+                                    docId: '',
+                                    author: '',
+                                    path: '',
+                                    description: '',
+                                    pictureThumbnailUrl: '',
+                                    siteName: '',
+                                    spWebUrl: '',
+                                    viewsLifeTime: 0,
+                                    viewsRecent: 0
+                                };
+                                row.Cells.map((cell, j) => {
+                                    if (cell.Key == 'Title') {
+                                        queryResult.title = cell.Value;
+                                    }
+                                    else if (cell.Key == 'DocId') {
+                                        queryResult.docId = cell.Value;
+                                    }
+                                    else if (cell.Key == 'Author') {
+                                        queryResult.author = cell.Value;
+                                    }
+                                    else if (cell.Key == 'Path') {
+                                        queryResult.path = cell.Value;
+                                    }
+                                    else if (cell.Key == 'Description') {
+                                        queryResult.description = cell.Value;
+                                    }
+                                    else if (cell.Key == 'PictureThumbnailURL') {
+                                        queryResult.pictureThumbnailUrl = cell.Value;
+                                    }
+                                    else if (cell.Key == 'SiteName') {
+                                        queryResult.siteName = cell.Value;
+                                    }
+                                    else if (cell.Key == 'SPWebUrl') {
+                                        queryResult.spWebUrl = cell.Value;
+                                    } 
+                                    else if (cell.Key == 'ViewsLifeTime') {
+                                        queryResult.viewsLifeTime = cell.Value;
+                                    } 
+                                    else if (cell.Key == 'ViewsRecent') {
+                                        queryResult.viewsRecent = cell.Value;
+                                    } 
+                                });
+                                queryResults.push(queryResult);
+                            });
+                            setGlobalNews(queryResults);
                         }, err => console.error(err))
                     })
     }, [])
