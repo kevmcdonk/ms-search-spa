@@ -1,6 +1,8 @@
-# Microsoft Search SPA
+# MS Search SPA
 
 This sample shows how you can use Microsoft Search to return results in a standalone app. It was born from a request to have the search experience outside of SharePoint with the added benefit of FAQs. Sadly, FAQs are not available in the Graph API yet so this is using QnA Maker.
+
+It is built using NextJS and utilises Microsoft Graph, SharePoint REST API, QnAMaker and MSAL for Azure AD Authentication. Further information at the end of this page.
 
 ## Getting started 
 
