@@ -16,7 +16,7 @@ import * as AdaptiveCards from 'adaptivecards';
 import * as ACFabric from 'adaptivecards-fabric';
 import * as ACData from 'adaptivecards-templating';
 
-const News = ({ data, elementPrefix, hideArrows, wheel }) => {
+const News = ({ data, headerText, elementPrefix }) => {
 
     const [searchCriteria, setSearchCriteria] = useState('');
     const [loading, setLoading] = useState(false);
@@ -39,19 +39,18 @@ const News = ({ data, elementPrefix, hideArrows, wheel }) => {
 
 
         <>
-            <div className="ms-Grid" style={{
+            <div className="ms-Grid" id={elementPrefix + 'Grid'} style={{
                 backgroundColor: '#e9ecef',
                 padding: '10px',
-                position: 'absolute',
                 zIndex: 4444,
                 width: '1088px'
             }}>
-               
-                    <div className="ms-Grid-row">
+               <h1>{headerText}</h1>
+                    <div className="ms-Grid-row" >
                         {cards.map((card, i) => {
                             // Return the element. Also pass key
                             return <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg3">
-                            <div key={'appDiv' + i} 
+                            <div key={elementPrefix + 'appDiv' + i} 
                                 className="card ms-depth-16"
                                 style={{
                                     margin: '5px',

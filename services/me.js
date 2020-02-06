@@ -3,6 +3,9 @@ import Axios from 'axios';
 const baseConfig = {
     baseURL: 'https://graph.microsoft.com/v1.0'
 }
+const betaBaseConfig = {
+    baseURL: 'https://graph.microsoft.com/beta'
+}
 
 export const getMe = (graphToken) =>
     Axios({
@@ -21,6 +24,19 @@ export const getMyPhoto = (graphToken) =>
         method: 'GET',
         url: '/me/photos/48x48/$value',
         responseType: 'blob',
+        headers: {
+            'Authorization': graphToken
+        }
+    })
+
+    export const getMyTrending = (graphToken) =>
+    Axios({
+        ...betaBaseConfig,
+        method: 'GET',
+        url: '/me/insights/trending',
+        params: {
+            $top: 8
+        },
         headers: {
             'Authorization': graphToken
         }
