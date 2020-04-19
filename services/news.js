@@ -30,21 +30,7 @@ const expandFields = [
 ].join(',')
 
 const metadataFilter = '<Where><Eq><FieldRef Name="FSObjType" /><Value Type="Integer">0</Value></Eq></Where>'
-/*
-https://cpsdemos.sharepoint.com/sites/TheLanding/_api
-/search/postquery
-{ "request": {"ClientType":"HighlightedContentWebPart",
-"QueryTemplate":"((ContentTypeId:0x0101009D1CB255DA76424F860D91F20E6C4118* AND PromotedState=2))",
-"SelectProperties":["ContentType","ContentTypeId","Title","EditorOwsUser","ModifiedBy","LastModifiedBy","FileExtension","FileType","Path","SiteName","SiteTitle","PictureThumbnailURL","DefaultEncodingURL","LastModifiedTime","ListID","ListItemID","SiteID","WebId","UniqueID","SPWebUrl","UserName","ProfileImageSrc","Name","Initials","WebPath","PreviewUrl","IconUrl","AccentColor","CardType","TipActionLabel","TipActionButtonIcon","ClassName","IsExternalContent"],
-"Properties":[{"Name":"TrimSelectProperties","Value":{"StrVal":"1","QueryPropertyValueTypeIndex":1}},{"Name":"EnableDynamicGroups","Value":{"BoolVal":"True","QueryPropertyValueTypeIndex":3}},{"Name":"EnableMultiGeoSearch","Value":{"BoolVal":"False","QueryPropertyValueTypeIndex":3}}],
-"SourceId":"8413CD39-2156-4E00-B54D-11EFD9ABDB89",
-"TrimDuplicates":false,
-"RowLimit":8,
-"RowsPerPage":8,
-"SortList":[{"Property":"LastModifiedTime","Direction":1}]} }
 
-https://cpsdemos.sharepoint.com/_api/search/query?querytext=%27ContentTypeId:0x0101009D1CB255DA76424F860D91F20E6C4118*%20and%20PromotedState=2%27&sortlist=%27LastModifiedTime:descending%27
-*/
 export const getNews = (spToken) =>
     Axios({
         ...baseConfig,

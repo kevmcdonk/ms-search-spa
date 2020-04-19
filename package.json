@@ -8,8 +8,7 @@
     "build": "next build",
     "start": "next start",
     "export": "npm run build && next export",
-    "test": "jest --setupFiles dotenv/config -c puppeteer/jest.config.js",
-    "test:watch": "jest --watch --setupFiles dotenv/config -c puppeteer/jest.config.js"
+    "test": "cypress open"
   },
   "keywords": [],
   "author": "",
@@ -36,11 +35,13 @@
     "@types/node": "12.12.17",
     "@types/react": "16.9.16",
     "babel-plugin-root-import": "6.4.1",
+    "cypress": "^4.4.0",
     "dotenv": "8.2.0",
     "jest": "24.9.0",
     "jest-circus": "24.9.0",
-    "jest-puppeteer": "4.4.0",
     "jest-environment-puppeteer": "4.4.0",
+    "jest-puppeteer": "4.4.0",
+    "node-sp-auth": "2.5.7",
     "puppeteer": "2.0.0"
   }
 }

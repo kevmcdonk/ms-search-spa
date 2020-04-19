@@ -3,4 +3,5 @@ node_modules
 out
 .env
 cypress/config/dev_auth.json
+cypress.json
 puppeteer/images/*.png

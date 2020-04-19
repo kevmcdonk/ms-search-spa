@@ -1,1 +1,12 @@
-{}
+{
+    "viewportWidth": 1200,
+    "viewportHeight": 1000,
+    "env": {
+      "username": "kevin.mcdonnell@cpsdemos.onmicrosoft.com",
+      "password": "##x9Zxp2eNj!",
+      "appUrl": "http://localhost:3000",
+      "clientId": "595a66b6-5dd1-459d-bce3-530766b58958",
+      "appAuthority":"https://login.microsoftonline.com/098d9cb5-2073-4fff-b463-8df6e3fdd974",
+      "tenantId": "098d9cb5-2073-4fff-b463-8df6e3fdd974"
+    }
+  }
