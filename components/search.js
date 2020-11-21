@@ -38,7 +38,7 @@ const Search = () => {
             }
 
                 const searchCards = searchResults.map(searchResult => {
-                    return generateCard(searchResultCard, searchResult._source);
+                    return generateCard(searchResultCard, searchResult);
                 });
                 setCards([...searchCards]);
                 setLoading(false);
@@ -77,6 +77,11 @@ const Search = () => {
         const card = acTemplate.expand(dataContext);
         adaptiveCard.parse(card);
         return adaptiveCard.render();
+    }
+
+    const generateCardFromService = (template, app) => {
+        
+        return '';
     }
 
     const returnAnswers = (value) => {

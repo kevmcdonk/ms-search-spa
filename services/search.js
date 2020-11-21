@@ -10,21 +10,15 @@ export const searchDriveItems = (graphToken, searchQuery) =>
         method: 'POST',
         baseURL: baseConfig.baseURL,
         url: '/search/query',
-        data: {
-            "requests": [
-                {
-                  "entityTypes": [
-                    "microsoft.graph.driveItem"
-                  ],
-                  "query": {
-                    "query_string": {
-                      "query": searchQuery
-                    }
-                  },
-                  "from": 0,
-                  "size": 25
-                }
-              ]
+        data: 
+        {
+          "requests":[
+            {
+              "entityTypes":["listItem"],
+              "query":{"queryString":searchQuery},
+              "fields":["id","name","contentclass","title","resource","parentReference","lastModifiedDateTime","summary"]
+            }
+          ]
         },
         headers: {
             'Authorization': graphToken
