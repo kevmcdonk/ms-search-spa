@@ -19,7 +19,7 @@
     "adaptivecards": "1.2.5",
     "adaptivecards-fabric": "1.0.3",
     "adaptivecards-templating": "0.1.1-alpha.0",
-    "axios": "0.19.0",
+    "axios": "0.21.1",
     "lodash": "^4.17.15",
     "lodash.debounce": "4.0.8",
     "msal": "1.2.0-beta.5",
